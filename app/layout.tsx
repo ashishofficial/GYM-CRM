@@ -14,9 +14,27 @@ export const metadata: Metadata = {
   description: "Modern gym management & member CRM",
 };
 
+// Suppresses the harmless Recharts ResponsiveContainer warning that fires once
+// on first paint before ResizeObserver reports parent dimensions.
+const filterRechartsWarning = `
+(function(){
+  if (typeof window === 'undefined' || window.__rcWarnFiltered) return;
+  window.__rcWarnFiltered = true;
+  var origWarn = console.warn;
+  console.warn = function(){
+    var msg = arguments[0];
+    if (typeof msg === 'string' && msg.indexOf('width(-1) and height(-1)') !== -1) return;
+    return origWarn.apply(console, arguments);
+  };
+})();
+`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: filterRechartsWarning }} />
+      </head>
       <body className="font-sans">
         {children}
         <Toaster
