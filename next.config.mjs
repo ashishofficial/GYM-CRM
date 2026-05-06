@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    optimizePackageImports: ["lucide-react", "recharts", "react-hook-form"],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "i.pravatar.cc" },

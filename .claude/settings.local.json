@@ -7,7 +7,10 @@
       "Bash(pkill -f \"next-server\")",
       "Bash(lsof -ti:3017)",
       "Bash(xargs -r kill -9)",
-      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Measure-Object | ForEach-Object { \"Remaining node processes: $\\($_.Count\\)\" }; Get-ChildItem .next -ErrorAction SilentlyContinue | Measure-Object | ForEach-Object { \".next entries: $\\($_.Count\\)\" })"
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Measure-Object | ForEach-Object { \"Remaining node processes: $\\($_.Count\\)\" }; Get-ChildItem .next -ErrorAction SilentlyContinue | Measure-Object | ForEach-Object { \".next entries: $\\($_.Count\\)\" })",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
