@@ -130,9 +130,15 @@ export default function MemberDetailPage() {
         </TabsContent>
       </Tabs>
 
-      <AssignPlanModal open={assignOpen} onClose={() => setAssignOpen(false)} member={member} />
-      <ApplyOfferModal open={offerOpen} onClose={() => setOfferOpen(false)} member={member} />
-      <InvoiceModal open={invoiceOpen} onClose={() => setInvoiceOpen(false)} member={member} />
+      {assignOpen && (
+        <AssignPlanModal open onClose={() => setAssignOpen(false)} member={member} />
+      )}
+      {offerOpen && (
+        <ApplyOfferModal open onClose={() => setOfferOpen(false)} member={member} />
+      )}
+      {invoiceOpen && (
+        <InvoiceModal open onClose={() => setInvoiceOpen(false)} member={member} />
+      )}
     </div>
   );
 }

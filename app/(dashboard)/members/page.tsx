@@ -97,12 +97,14 @@ export default function MembersPage() {
         {members.length} members
       </p>
 
-      <AddMemberModal
-        open={addOpen}
-        onClose={() => setAddOpen(false)}
-        onCreate={handleCreate}
-        existingCount={members.length}
-      />
+      {addOpen && (
+        <AddMemberModal
+          open
+          onClose={() => setAddOpen(false)}
+          onCreate={handleCreate}
+          existingCount={members.length}
+        />
+      )}
     </div>
   );
 }

@@ -33,12 +33,12 @@ export default function PlansPage() {
         ))}
       </div>
 
-      <CreatePlanModal open={createOpen} onClose={() => setCreateOpen(false)} />
-      <AssignPlanToMemberModal
-        open={!!assignTo}
-        onClose={() => setAssignTo(null)}
-        plan={assignTo}
-      />
+      {createOpen && (
+        <CreatePlanModal open onClose={() => setCreateOpen(false)} />
+      )}
+      {assignTo && (
+        <AssignPlanToMemberModal open onClose={() => setAssignTo(null)} plan={assignTo} />
+      )}
     </div>
   );
 }
