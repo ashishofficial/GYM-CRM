@@ -1,9 +1,5 @@
-"use client";
-
-import { Button } from "@/components/ui/Button";
 import { AdminTasks } from "@/components/dashboard/AdminTasks";
 import { AttendanceStats } from "@/components/dashboard/AttendanceStats";
-import { DateFilter, type DateRange } from "@/components/dashboard/DateFilter";
 import { ExpiringPlansTable } from "@/components/dashboard/ExpiringPlansTable";
 import { KpiCard } from "@/components/dashboard/KpiCard";
 import { MembershipGrowthCard } from "@/components/dashboard/MembershipGrowthCard";
@@ -18,13 +14,9 @@ import { SmartInsights } from "@/components/dashboard/SmartInsights";
 import { TopMetrics } from "@/components/dashboard/TopMetrics";
 import { members } from "@/data/members";
 import { formatCurrency, getPlanStatus } from "@/lib/utils";
-import { Activity, AlertTriangle, DollarSign, UserPlus, Users } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
+import { Activity, AlertTriangle, DollarSign, Users } from "lucide-react";
 
 export default function DashboardPage() {
-  const [range, setRange] = useState<DateRange>("month");
-
   const total = members.length;
   const active = members.filter(
     (m) => m.isActive && m.currentPlan && getPlanStatus(m.currentPlan.expiryDate) !== "expired",
@@ -42,22 +34,11 @@ export default function DashboardPage() {
     <div className="space-y-8">
       {/* Sticky page header */}
       <div className="sticky top-16 z-20 -mx-4 border-b border-slate-200/70 bg-slate-50/80 px-4 py-4 backdrop-blur-md lg:-mx-8 lg:px-8">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Dashboard</h1>
-            <p className="mt-1 text-sm text-slate-500">
-              Overview of your gym performance and member activity.
-            </p>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <DateFilter value={range} onChange={setRange} />
-            <Link href="/members">
-              <Button>
-                <UserPlus className="h-4 w-4" />
-                Add member
-              </Button>
-            </Link>
-          </div>
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Dashboard</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            Overview of your gym performance and member activity.
+          </p>
         </div>
       </div>
 
