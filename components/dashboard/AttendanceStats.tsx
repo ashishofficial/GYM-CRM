@@ -31,6 +31,8 @@ export function AttendanceStats() {
 
   return (
     <ChartCard
+      gradient
+      className="relative overflow-hidden border border-slate-200/60 bg-gradient-to-br from-white via-sky-50/40 to-sky-100/40"
       title="Attendance"
       description="Last 7 days of check-ins"
       icon={Activity}

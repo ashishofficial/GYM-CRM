@@ -25,6 +25,8 @@ export function LiveCheckIns() {
 
   return (
     <ChartCard
+      gradient
+      className="relative overflow-hidden border border-slate-200/60 bg-gradient-to-br from-white via-emerald-50/40 to-emerald-100/40"
       title="Live check-ins"
       description="Members currently in the gym"
       icon={Radio}

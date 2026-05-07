@@ -11,6 +11,8 @@ interface Props {
   children: ReactNode;
   className?: string;
   bodyClassName?: string;
+  /** Pass-through to Card primitive — drops white bg + slate border. */
+  gradient?: boolean;
 }
 
 export function ChartCard({
@@ -21,9 +23,10 @@ export function ChartCard({
   children,
   className,
   bodyClassName,
+  gradient,
 }: Props) {
   return (
-    <Card className={cn("h-full", className)}>
+    <Card gradient={gradient} className={cn("h-full", className)}>
       <div className="flex flex-wrap items-start justify-between gap-2 px-5 pb-3 pt-4 sm:px-6 sm:pb-4 sm:pt-5">
         <div className="flex items-start gap-2.5">
           {Icon && (

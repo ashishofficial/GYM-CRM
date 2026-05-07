@@ -62,6 +62,8 @@ export function TopMetrics() {
 
   return (
     <ChartCard
+      gradient
+      className="relative overflow-hidden border border-slate-200/60 bg-gradient-to-br from-white via-amber-50/40 to-amber-100/40"
       title="Top metrics"
       description="Standout members and plans"
       icon={Trophy}
