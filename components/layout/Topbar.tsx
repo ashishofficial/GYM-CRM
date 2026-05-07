@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar } from "@/components/ui/Avatar";
+import { NotificationsDropdown } from "@/components/layout/NotificationsDropdown";
 import { getSession, type Session } from "@/lib/auth";
 import { Bell, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -34,11 +35,17 @@ export function Topbar({ onMenu }: Props) {
   const pathname = usePathname();
   const [session, setSession] = useState<Session | null>(null);
   const [greeting, setGreeting] = useState("Welcome back");
+  const [notifOpen, setNotifOpen] = useState(false);
 
   useEffect(() => {
     setSession(getSession());
     setGreeting(timeOfDayGreeting(new Date().getHours()));
   }, []);
+
+  // Close the notifications dropdown when navigating to a different route.
+  useEffect(() => {
+    setNotifOpen(false);
+  }, [pathname]);
 
   const displayName = session?.name ?? "Admin";
   const role = session?.role ?? "Admin";
@@ -81,13 +88,18 @@ export function Topbar({ onMenu }: Props) {
       </div>
 
       <div className="flex shrink-0 items-center gap-3">
-        <button
-          className="relative rounded-full p-2 text-slate-600 hover:bg-slate-100"
-          aria-label="Notifications"
-        >
-          <Bell className="h-5 w-5" />
-          <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => setNotifOpen((v) => !v)}
+            className="relative rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 aria-expanded:bg-slate-100"
+            aria-label="Notifications"
+            aria-expanded={notifOpen}
+          >
+            <Bell className="h-5 w-5" />
+            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
+          </button>
+          <NotificationsDropdown open={notifOpen} onClose={() => setNotifOpen(false)} />
+        </div>
 
         <div className="hidden items-center gap-3 sm:flex">
           <div className="text-right">
