@@ -70,7 +70,7 @@ export function PeakHoursHeatmap() {
                   <div
                     key={i}
                     title={`${row.day} ${peakHoursData.hours[i]} · ${v} check-ins`}
-                    className={`group relative aspect-square flex-1 rounded-md transition-all hover:z-10 hover:scale-110 hover:ring-2 hover:ring-brand-300 ${intensityClass(
+                    className={`relative aspect-square flex-1 cursor-pointer rounded-md ring-1 ring-inset ring-transparent transition-[box-shadow,filter] duration-150 hover:brightness-110 hover:ring-slate-900/40 ${intensityClass(
                       v,
                     )}`}
                   >
