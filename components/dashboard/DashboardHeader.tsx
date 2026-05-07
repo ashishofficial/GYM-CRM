@@ -41,7 +41,7 @@ export function DashboardHeader() {
   }, []);
 
   return (
-    <div className="sticky top-16 z-20 -mx-4 border-b border-slate-200/70 bg-slate-50/85 px-4 py-4 backdrop-blur-md sm:py-5 lg:-mx-8 lg:px-8">
+    <div className="sticky top-16 z-20 -mx-4 -mt-6 border-b border-slate-200/70 bg-slate-50/85 px-4 py-3 backdrop-blur-md sm:py-4 lg:-mx-8 lg:px-8">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500" suppressHydrationWarning>
