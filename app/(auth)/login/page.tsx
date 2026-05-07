@@ -62,7 +62,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200/70 bg-white/80 p-7 shadow-card backdrop-blur sm:p-8">
+    <div className="rounded-3xl border border-slate-200/60 bg-white/85 p-7 shadow-[0_20px_60px_-20px_rgba(15,23,42,0.18)] backdrop-blur-xl sm:p-9">
       {/* Header */}
       <div className="mb-7">
         <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700">
@@ -72,7 +72,7 @@ export default function LoginPage() {
           </span>
           All systems operational
         </span>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-[2rem]">
           Welcome back
         </h1>
         <p className="mt-1.5 text-sm text-slate-500">
@@ -149,26 +149,28 @@ export default function LoginPage() {
           type="submit"
           loading={isSubmitting}
           size="lg"
-          className="w-full bg-gradient-to-r from-brand-600 via-brand-600 to-indigo-600 hover:from-brand-700 hover:via-brand-700 hover:to-indigo-700"
+          className="group w-full bg-gradient-to-r from-brand-600 via-brand-600 to-indigo-600 shadow-[0_8px_24px_-8px_rgba(75,102,255,0.6)] hover:from-brand-700 hover:via-brand-700 hover:to-indigo-700 hover:shadow-[0_10px_28px_-8px_rgba(75,102,255,0.7)]"
         >
           Sign in
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </Button>
       </form>
 
       <button
         type="button"
         onClick={fillDemo}
-        className="group mt-5 flex w-full items-center justify-between gap-3 rounded-xl border border-dashed border-brand-300 bg-gradient-to-br from-brand-50/60 to-violet-50/60 px-4 py-3 text-left text-xs transition-all hover:border-brand-400 hover:from-brand-50 hover:to-violet-50"
+        className="group mt-5 flex w-full items-center justify-between gap-3 rounded-2xl border border-dashed border-brand-300 bg-gradient-to-br from-brand-50/70 to-violet-50/70 px-4 py-3 text-left text-xs transition-all hover:-translate-y-0.5 hover:border-brand-400 hover:from-brand-50 hover:to-violet-50"
       >
-        <span className="flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white text-brand-600 ring-1 ring-brand-200">
+        <span className="flex items-center gap-2.5">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white text-brand-600 ring-1 ring-brand-200">
             <Sparkles className="h-3.5 w-3.5" />
           </span>
           <span>
-            <span className="block font-semibold text-slate-900">Try demo credentials</span>
+            <span className="block font-semibold text-slate-900">
+              Try demo credentials
+            </span>
             <span className="block text-[10px] text-slate-500">
-              Click to auto-fill
+              One click to auto-fill
             </span>
           </span>
         </span>
@@ -179,7 +181,10 @@ export default function LoginPage() {
 
       <p className="mt-7 text-center text-sm text-slate-500">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="font-semibold text-brand-600 hover:text-brand-700">
+        <Link
+          href="/signup"
+          className="font-semibold text-brand-600 hover:text-brand-700"
+        >
           Sign up
         </Link>
         <span className="mx-2 text-slate-300">·</span>
