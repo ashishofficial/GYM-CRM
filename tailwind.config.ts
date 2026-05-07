@@ -39,14 +39,21 @@ const config: Config = {
           "100%": { opacity: "1", transform: "scale(1)" },
         },
         "fade-up": {
-          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "0%": { opacity: "0", transform: "translateY(12px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        wave: {
+          "0%, 100%": { transform: "rotate(0deg)" },
+          "10%, 30%": { transform: "rotate(14deg)" },
+          "20%, 40%": { transform: "rotate(-8deg)" },
+          "50%": { transform: "rotate(0deg)" },
         },
       },
       animation: {
         "fade-in": "fade-in 0.2s ease-out",
         "scale-in": "scale-in 0.18s ease-out",
-        "fade-up": "fade-up 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+        "fade-up": "fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both",
+        wave: "wave 2.4s ease-in-out 0.5s 2",
       },
     },
   },

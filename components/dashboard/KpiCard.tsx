@@ -18,9 +18,17 @@ const toneClasses: Record<NonNullable<Props["tone"]>, string> = {
   violet: "bg-violet-50 text-violet-600",
 };
 
+const glowClasses: Record<NonNullable<Props["tone"]>, string> = {
+  brand: "hover:shadow-[0_8px_24px_-12px_rgba(75,102,255,0.35)]",
+  emerald: "hover:shadow-[0_8px_24px_-12px_rgba(16,185,129,0.35)]",
+  amber: "hover:shadow-[0_8px_24px_-12px_rgba(245,158,11,0.35)]",
+  rose: "hover:shadow-[0_8px_24px_-12px_rgba(244,63,94,0.35)]",
+  violet: "hover:shadow-[0_8px_24px_-12px_rgba(139,92,246,0.35)]",
+};
+
 export function KpiCard({ title, value, change, icon: Icon, tone = "brand" }: Props) {
   return (
-    <Card hover className="p-4 sm:p-6">
+    <Card hover className={cn("p-4 sm:p-6", glowClasses[tone])}>
       <div className="flex items-start justify-between gap-3">
         <p className="text-[11px] font-medium uppercase tracking-wider text-slate-500 sm:text-xs">
           {title}
