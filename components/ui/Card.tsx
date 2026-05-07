@@ -3,14 +3,19 @@ import { HTMLAttributes } from "react";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
   hover?: boolean;
+  /** When true, removes default white bg + slate border so the consumer
+   *  can apply a gradient or custom surface. */
+  gradient?: boolean;
 }
 
-export function Card({ className, hover, ...props }: CardProps) {
+export function Card({ className, hover, gradient, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "flex flex-col rounded-2xl border border-slate-200/70 bg-white shadow-soft transition-all duration-200",
-        hover && "hover:-translate-y-0.5 hover:shadow-md hover:border-slate-200",
+        "flex flex-col rounded-2xl border shadow-soft transition-all duration-200",
+        gradient ? "border-transparent" : "border-slate-200/70 bg-white",
+        hover && "hover:-translate-y-0.5 hover:shadow-md",
+        !gradient && hover && "hover:border-slate-200",
         className,
       )}
       {...props}

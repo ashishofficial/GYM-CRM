@@ -42,8 +42,12 @@ function GoalRow({ label, current, target, unit, accent }: GoalRowProps) {
 
 export function GoalProgress() {
   return (
-    <Card className="p-5 sm:p-6">
-      <div className="flex flex-wrap items-center justify-between gap-2">
+    <Card className="relative overflow-hidden p-5 sm:p-6">
+      {/* Subtle gradient overlay top-right + bottom-left */}
+      <div className="pointer-events-none absolute -right-24 -top-24 h-56 w-56 rounded-full bg-brand-100/60 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 -left-12 h-48 w-48 rounded-full bg-violet-100/50 blur-3xl" />
+
+      <div className="relative flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
             <Target className="h-4 w-4" />
@@ -62,7 +66,7 @@ export function GoalProgress() {
         </span>
       </div>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-3 sm:gap-5">
+      <div className="relative mt-5 grid gap-4 sm:grid-cols-3 sm:gap-5">
         <GoalRow
           label={monthlyGoals.revenue.label}
           current={monthlyGoals.revenue.current}
