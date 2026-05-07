@@ -8,6 +8,8 @@ interface Props {
   discount: number;
   invoiceId?: string;
   date?: string;
+  /** DOM id used by lib/downloadInvoice to capture this preview to PDF. */
+  captureId?: string;
 }
 
 export function InvoicePreview({
@@ -16,12 +18,13 @@ export function InvoicePreview({
   discount,
   invoiceId = "INV-1234",
   date,
+  captureId,
 }: Props) {
   const total = Math.max(0, plan.price - discount);
   const invoiceDate = date ?? new Date().toISOString().slice(0, 10);
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6">
+    <div id={captureId} className="rounded-xl border border-slate-200 bg-white p-6">
       <div className="flex items-start justify-between border-b border-slate-100 pb-5">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 text-white">

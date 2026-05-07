@@ -11,8 +11,19 @@ import { InvoicePreview } from "@/components/invoices/InvoicePreview";
 import { InvoicesStats } from "@/components/invoices/InvoicesStats";
 import { members } from "@/data/members";
 import { plans } from "@/data/plans";
+import { downloadInvoice } from "@/lib/downloadInvoice";
 import { formatCurrency, formatDate } from "@/lib/utils";
-import { ChevronRight, Inbox, Mail, MessageSquare, Plus, Printer, Search, X } from "lucide-react";
+import {
+  ChevronRight,
+  Download,
+  Inbox,
+  Mail,
+  MessageSquare,
+  Plus,
+  Printer,
+  Search,
+  X,
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import type { PaymentStatus } from "@/types";
@@ -61,6 +72,44 @@ export default function InvoicesPage() {
   const [status, setStatus] = useState("all");
   const [generateOpen, setGenerateOpen] = useState(false);
   const [previewRow, setPreviewRow] = useState<InvoiceRow | null>(null);
+  const [downloading, setDownloading] = useState(false);
+
+  const PREVIEW_CAPTURE_ID = "invoice-preview-capture";
+  const GENERATE_CAPTURE_ID = "invoice-generate-capture";
+
+  const handleDownloadPreview = async () => {
+    if (!previewRow) return;
+    setDownloading(true);
+    try {
+      await downloadInvoice(PREVIEW_CAPTURE_ID, `${previewRow.invoiceId}.pdf`);
+      toast.success("Invoice downloaded");
+    } catch (err) {
+      toast.error("Could not download invoice");
+      console.error(err);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const handleDownloadGenerate = async () => {
+    setDownloading(true);
+    try {
+      await downloadInvoice(
+        GENERATE_CAPTURE_ID,
+        `${genMember.fullName.replace(/\s+/g, "_")}-invoice.pdf`,
+      );
+      toast.success("Invoice downloaded");
+    } catch (err) {
+      toast.error("Could not download invoice");
+      console.error(err);
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const handlePrint = () => {
+    if (typeof window !== "undefined") window.print();
+  };
 
   const [genMemberId, setGenMemberId] = useState(members[0].id);
   const [genPlanId, setGenPlanId] = useState(plans[0].id);
@@ -298,6 +347,10 @@ export default function InvoicesPage() {
             <Button variant="outline" onClick={() => setGenerateOpen(false)}>
               Cancel
             </Button>
+            <Button variant="outline" onClick={handleDownloadGenerate} loading={downloading}>
+              <Download className="h-4 w-4" />
+              Download PDF
+            </Button>
             <Button
               onClick={() => {
                 toast.success(`Invoice generated for ${genMember.fullName}`);
@@ -342,7 +395,12 @@ export default function InvoicesPage() {
             </div>
           </div>
 
-          <InvoicePreview member={genMember} plan={genPlan} discount={genDiscount} />
+          <InvoicePreview
+            captureId={GENERATE_CAPTURE_ID}
+            member={genMember}
+            plan={genPlan}
+            discount={genDiscount}
+          />
         </div>
       </Modal>
 
@@ -355,7 +413,11 @@ export default function InvoicesPage() {
         size="lg"
         footer={
           <>
-            <Button variant="outline" onClick={() => toast.success("Print dialog opened")}>
+            <Button variant="outline" onClick={handleDownloadPreview} loading={downloading}>
+              <Download className="h-4 w-4" />
+              Download PDF
+            </Button>
+            <Button variant="outline" onClick={handlePrint}>
               <Printer className="h-4 w-4" />
               Print
             </Button>
@@ -379,6 +441,7 @@ export default function InvoicesPage() {
       >
         {previewRow && (
           <InvoicePreview
+            captureId={PREVIEW_CAPTURE_ID}
             member={previewRow.member}
             plan={plans.find((p) => p.name === previewRow.planName) ?? plans[0]}
             discount={Math.max(
