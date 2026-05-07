@@ -156,7 +156,7 @@ export function SmartInsights() {
         const t = tones[i.tone];
         return (
           <Card key={i.title} className="overflow-hidden">
-            <div className="flex items-start justify-between gap-3 px-6 pt-5">
+            <div className="flex items-start justify-between gap-3 px-5 pt-4 sm:px-6 sm:pt-5">
               <div className="flex items-start gap-3">
                 <div className={cn("flex h-9 w-9 items-center justify-center rounded-xl", t.iconBg)}>
                   <Icon className="h-4.5 w-4.5" />
@@ -176,7 +176,7 @@ export function SmartInsights() {
               </span>
             </div>
 
-            <ul className="mt-3 flex-1 space-y-1 px-6 pb-3">
+            <ul className="mt-3 flex-1 space-y-1 px-5 pb-3 sm:px-6">
               {i.items.length === 0 ? (
                 <li className="rounded-lg border border-dashed border-slate-200 bg-slate-50/50 p-4 text-center text-xs text-slate-500">
                   All clear — nothing to action
@@ -197,7 +197,7 @@ export function SmartInsights() {
               )}
             </ul>
 
-            <div className="flex items-center gap-1 border-t border-slate-100 px-3 py-2">
+            <div className="flex items-center gap-1 border-t border-slate-100 px-3 py-2 sm:px-3">
               {i.secondaryAction && (
                 <button
                   onClick={i.secondaryAction.onClick}

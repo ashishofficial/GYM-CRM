@@ -52,7 +52,7 @@ export function QuickActions() {
           <Link
             key={a.label}
             href={a.href}
-            className="group flex items-center gap-4 rounded-2xl border border-slate-200/70 bg-white p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:border-slate-200 hover:shadow-md"
+            className="group flex items-center gap-3 rounded-2xl border border-slate-200/70 bg-white p-4 shadow-soft transition-all hover:-translate-y-0.5 hover:border-slate-200 hover:shadow-md sm:gap-4 sm:p-5"
           >
             <div
               className={cn(
