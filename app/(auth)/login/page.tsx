@@ -3,9 +3,10 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { FieldError, Label } from "@/components/ui/Label";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { setSession } from "@/lib/auth";
+import { Eye, EyeOff, Lock, Mail, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -16,19 +17,51 @@ interface FormValues {
   remember: boolean;
 }
 
+const DEMO_EMAIL = "admin@pulsegym.app";
+const DEMO_PASSWORD = "admin123";
+
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPwd, setShowPwd] = useState(false);
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ defaultValues: { email: "", password: "", remember: true } });
 
   const onSubmit = async (values: FormValues) => {
-    await new Promise((r) => setTimeout(r, 700));
-    toast.success(`Welcome back, ${values.email.split("@")[0]}!`);
-    router.push("/dashboard");
+    // Mock: accept demo credentials or any valid form
+    await new Promise((r) => setTimeout(r, 500));
+
+    const acceptCredentials =
+      values.email === DEMO_EMAIL && values.password === DEMO_PASSWORD;
+    const acceptAnyValid = values.password.length >= 6;
+
+    if (!acceptCredentials && !acceptAnyValid) {
+      toast.error("Invalid email or password");
+      return;
+    }
+
+    const namePart = values.email.split("@")[0];
+    setSession({
+      email: values.email,
+      name: namePart.charAt(0).toUpperCase() + namePart.slice(1),
+      role: "Admin",
+      loggedInAt: new Date().toISOString(),
+    });
+
+    toast.success(`Welcome back, ${namePart}!`);
+
+    const from = searchParams.get("from") || "/dashboard";
+    router.push(from);
+    router.refresh();
+  };
+
+  const fillDemo = () => {
+    setValue("email", DEMO_EMAIL, { shouldValidate: true });
+    setValue("password", DEMO_PASSWORD, { shouldValidate: true });
   };
 
   return (
@@ -104,17 +137,19 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <div className="my-6 flex items-center gap-3 text-xs text-slate-400">
-        <span className="h-px flex-1 bg-slate-200" />
-        OR
-        <span className="h-px flex-1 bg-slate-200" />
-      </div>
-
-      <div className="grid gap-2">
-        <Button variant="outline" size="lg" className="w-full">
-          Continue with Google
-        </Button>
-      </div>
+      <button
+        type="button"
+        onClick={fillDemo}
+        className="mt-4 flex w-full items-center justify-between gap-2 rounded-lg border border-dashed border-brand-200 bg-brand-50/40 px-4 py-3 text-left text-xs transition-colors hover:bg-brand-50"
+      >
+        <span className="flex items-center gap-2 text-brand-700">
+          <Sparkles className="h-3.5 w-3.5" />
+          <span className="font-semibold">Use demo credentials</span>
+        </span>
+        <span className="font-mono text-[11px] text-slate-500">
+          {DEMO_EMAIL} · {DEMO_PASSWORD}
+        </span>
+      </button>
 
       <p className="mt-8 text-center text-sm text-slate-500">
         Don&apos;t have an account?{" "}

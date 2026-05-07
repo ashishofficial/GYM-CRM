@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { FieldError, Label } from "@/components/ui/Label";
+import { setSession } from "@/lib/auth";
 import { Eye, EyeOff, Lock, Mail, Phone, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -34,8 +35,15 @@ export default function SignupPage() {
 
   const onSubmit = async (values: FormValues) => {
     await new Promise((r) => setTimeout(r, 700));
+    setSession({
+      email: values.email,
+      name: values.fullName,
+      role: "Admin",
+      loggedInAt: new Date().toISOString(),
+    });
     toast.success(`Account created for ${values.fullName}`);
     router.push("/dashboard");
+    router.refresh();
   };
 
   return (

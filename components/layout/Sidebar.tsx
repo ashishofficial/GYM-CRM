@@ -1,5 +1,6 @@
 "use client";
 
+import { clearSession } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -13,7 +14,8 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const nav = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -30,6 +32,15 @@ interface Props {
 
 export function Sidebar({ open, onClose }: Props) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    clearSession();
+    onClose();
+    toast.success("Signed out");
+    router.push("/login");
+    router.refresh();
+  };
 
   return (
     <>
@@ -106,13 +117,13 @@ export function Sidebar({ open, onClose }: Props) {
             <Settings className="h-4 w-4 text-slate-400" />
             Settings
           </Link>
-          <Link
-            href="/login"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-red-600"
+          <button
+            onClick={handleSignOut}
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-red-600"
           >
             <LogOut className="h-4 w-4 text-slate-400" />
             Sign out
-          </Link>
+          </button>
         </div>
       </aside>
     </>

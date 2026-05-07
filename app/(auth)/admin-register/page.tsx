@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { FieldError, Label } from "@/components/ui/Label";
 import { Select } from "@/components/ui/Select";
+import { setSession, type Session } from "@/lib/auth";
 import { Building2, Eye, EyeOff, KeyRound, Lock, Mail, Phone, ShieldCheck, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,8 +39,15 @@ export default function AdminRegisterPage() {
 
   const onSubmit = async (values: FormValues) => {
     await new Promise((r) => setTimeout(r, 800));
+    setSession({
+      email: values.email,
+      name: values.fullName,
+      role: values.role as Session["role"],
+      loggedInAt: new Date().toISOString(),
+    });
     toast.success(`Admin account created for ${values.gymName}`);
     router.push("/dashboard");
+    router.refresh();
   };
 
   return (

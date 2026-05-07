@@ -1,0 +1,55 @@
+import { NextRequest, NextResponse } from "next/server";
+
+const AUTH_COOKIE = "gym-crm-auth";
+
+const PROTECTED_PREFIXES = [
+  "/dashboard",
+  "/members",
+  "/plans",
+  "/offers",
+  "/invoices",
+];
+
+const AUTH_PAGES = new Set(["/login", "/signup", "/admin-register"]);
+
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  const hasSession = !!request.cookies.get(AUTH_COOKIE)?.value;
+
+  const isProtected = PROTECTED_PREFIXES.some(
+    (p) => pathname === p || pathname.startsWith(`${p}/`),
+  );
+
+  // Block protected routes if not logged in.
+  if (isProtected && !hasSession) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    if (pathname !== "/dashboard") {
+      url.searchParams.set("from", pathname);
+    }
+    return NextResponse.redirect(url);
+  }
+
+  // Bounce authed users away from auth pages.
+  if (hasSession && AUTH_PAGES.has(pathname)) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/dashboard";
+    url.search = "";
+    return NextResponse.redirect(url);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    "/dashboard/:path*",
+    "/members/:path*",
+    "/plans/:path*",
+    "/offers/:path*",
+    "/invoices/:path*",
+    "/login",
+    "/signup",
+    "/admin-register",
+  ],
+};
