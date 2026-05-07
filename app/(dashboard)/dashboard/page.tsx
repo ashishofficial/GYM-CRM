@@ -1,7 +1,6 @@
 import { AdminTasks } from "@/components/dashboard/AdminTasks";
 import { AttendanceStats } from "@/components/dashboard/AttendanceStats";
 import { CohortRetention } from "@/components/dashboard/CohortRetention";
-import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { ExpiringPlansTable } from "@/components/dashboard/ExpiringPlansTable";
 import { GoalProgress } from "@/components/dashboard/GoalProgress";
 import { KpiCard } from "@/components/dashboard/KpiCard";
@@ -40,9 +39,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-5 sm:space-y-6 lg:space-y-8">
-      <DashboardHeader />
-
-      <StaggerSection delay={50}>
+      <StaggerSection delay={0}>
         <QuickActions />
       </StaggerSection>
 
