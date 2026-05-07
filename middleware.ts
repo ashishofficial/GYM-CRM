@@ -16,11 +16,18 @@ export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const hasSession = !!request.cookies.get(AUTH_COOKIE)?.value;
 
+  // Root: route based on auth state
+  if (pathname === "/") {
+    const url = request.nextUrl.clone();
+    url.pathname = hasSession ? "/dashboard" : "/login";
+    return NextResponse.redirect(url);
+  }
+
   const isProtected = PROTECTED_PREFIXES.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`),
   );
 
-  // Block protected routes if not logged in.
+  // Block protected routes if not logged in
   if (isProtected && !hasSession) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
@@ -30,7 +37,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Bounce authed users away from auth pages.
+  // Bounce authed users away from auth pages
   if (hasSession && AUTH_PAGES.has(pathname)) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
@@ -43,6 +50,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
     "/dashboard/:path*",
     "/members/:path*",
     "/plans/:path*",
