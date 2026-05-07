@@ -3,13 +3,12 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { FieldError, Label } from "@/components/ui/Label";
-import { setSession } from "@/lib/auth";
-import { ArrowRight, Eye, EyeOff, Lock, Mail, Sparkles } from "lucide-react";
-import Link from "next/link";
+import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { signInAction } from "./actions";
 
 interface FormValues {
   email: string;
@@ -17,8 +16,7 @@ interface FormValues {
   remember: boolean;
 }
 
-const DEMO_EMAIL = "admin@pulsegym.app";
-const DEMO_PASSWORD = "admin123";
+const SESSION_KEY = "gym-crm-session";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -27,38 +25,33 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     defaultValues: { email: "", password: "", remember: true },
   });
 
   const onSubmit = async (values: FormValues) => {
-    await new Promise((r) => setTimeout(r, 500));
+    const result = await signInAction(values.email, values.password);
 
-    if (values.password.length < 6) {
-      toast.error("Invalid email or password");
+    if (!result.ok) {
+      toast.error(result.error ?? "Sign-in failed");
       return;
     }
 
-    const namePart = values.email.split("@")[0];
-    setSession({
-      email: values.email,
-      name: namePart.charAt(0).toUpperCase() + namePart.slice(1),
-      role: "Admin",
-      loggedInAt: new Date().toISOString(),
-    });
+    // Mirror session info into localStorage so the Topbar can show the user
+    // (cookie was already set server-side by the action).
+    if (result.session) {
+      try {
+        localStorage.setItem(SESSION_KEY, JSON.stringify(result.session));
+      } catch {
+        // ignore
+      }
+    }
 
-    toast.success(`Welcome back, ${namePart}!`);
-
+    toast.success(`Welcome back, ${result.session?.name ?? ""}`);
     const from = searchParams.get("from") || "/dashboard";
     router.push(from);
     router.refresh();
-  };
-
-  const fillDemo = () => {
-    setValue("email", DEMO_EMAIL, { shouldValidate: true });
-    setValue("password", DEMO_PASSWORD, { shouldValidate: true });
   };
 
   return (
@@ -101,17 +94,7 @@ export default function LoginPage() {
         </div>
 
         <div>
-          <div className="mb-1.5 flex items-center justify-between">
-            <Label htmlFor="password" className="mb-0">
-              Password
-            </Label>
-            <Link
-              href="#"
-              className="text-xs font-medium text-brand-600 hover:text-brand-700"
-            >
-              Forgot password?
-            </Link>
-          </div>
+          <Label htmlFor="password">Password</Label>
           <Input
             id="password"
             type={showPwd ? "text" : "password"}
@@ -155,46 +138,6 @@ export default function LoginPage() {
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
         </Button>
       </form>
-
-      <button
-        type="button"
-        onClick={fillDemo}
-        className="group mt-5 flex w-full items-center justify-between gap-3 rounded-2xl border border-dashed border-brand-300 bg-gradient-to-br from-brand-50/70 to-violet-50/70 px-4 py-3 text-left text-xs transition-all hover:-translate-y-0.5 hover:border-brand-400 hover:from-brand-50 hover:to-violet-50"
-      >
-        <span className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-white text-brand-600 ring-1 ring-brand-200">
-            <Sparkles className="h-3.5 w-3.5" />
-          </span>
-          <span>
-            <span className="block font-semibold text-slate-900">
-              Try demo credentials
-            </span>
-            <span className="block text-[10px] text-slate-500">
-              One click to auto-fill
-            </span>
-          </span>
-        </span>
-        <span className="font-mono text-[10px] text-slate-500 group-hover:text-slate-700">
-          {DEMO_EMAIL}
-        </span>
-      </button>
-
-      <p className="mt-7 text-center text-sm text-slate-500">
-        Don&apos;t have an account?{" "}
-        <Link
-          href="/signup"
-          className="font-semibold text-brand-600 hover:text-brand-700"
-        >
-          Sign up
-        </Link>
-        <span className="mx-2 text-slate-300">·</span>
-        <Link
-          href="/admin-register"
-          className="font-semibold text-brand-600 hover:text-brand-700"
-        >
-          Register as Admin
-        </Link>
-      </p>
     </div>
   );
 }

@@ -10,7 +10,7 @@ const PROTECTED_PREFIXES = [
   "/invoices",
 ];
 
-const AUTH_PAGES = new Set(["/login", "/signup", "/admin-register"]);
+const AUTH_PAGES = new Set(["/login"]);
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -57,7 +57,5 @@ export const config = {
     "/offers/:path*",
     "/invoices/:path*",
     "/login",
-    "/signup",
-    "/admin-register",
   ],
 };
