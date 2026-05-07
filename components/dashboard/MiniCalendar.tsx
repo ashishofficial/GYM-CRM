@@ -21,6 +21,20 @@ const MONTH_LABELS = [
   "November",
   "December",
 ];
+const MONTH_LABELS_SHORT = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 export function MiniCalendar() {
   const today = new Date();
@@ -69,7 +83,7 @@ export function MiniCalendar() {
       description="Plan expiries this month"
       icon={CalendarDays}
       actions={
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           <button
             onClick={prev}
             className="rounded-md p-1 text-slate-500 transition-colors hover:bg-slate-100"
@@ -77,8 +91,13 @@ export function MiniCalendar() {
           >
             <ChevronLeft className="h-3.5 w-3.5" />
           </button>
-          <span className="min-w-[100px] text-center text-xs font-semibold text-slate-700">
-            {MONTH_LABELS[view.month]} {view.year}
+          <span className="min-w-[68px] text-center text-xs font-semibold text-slate-700 sm:min-w-[100px]">
+            <span className="sm:hidden">
+              {MONTH_LABELS_SHORT[view.month]} {view.year}
+            </span>
+            <span className="hidden sm:inline">
+              {MONTH_LABELS[view.month]} {view.year}
+            </span>
           </span>
           <button
             onClick={next}
@@ -90,12 +109,12 @@ export function MiniCalendar() {
         </div>
       }
     >
-      <div className="mb-2 grid grid-cols-7 gap-1 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+      <div className="mb-2 grid grid-cols-7 gap-1 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-400 sm:gap-1.5">
         {DAY_LABELS.map((d, i) => (
           <span key={i}>{d}</span>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
         {cells.map((day, idx) => {
           if (!day) return <span key={idx} />;
           const expiries = expiriesByDay.get(String(day));
@@ -105,9 +124,9 @@ export function MiniCalendar() {
               key={idx}
               title={expiries?.join(", ")}
               className={cn(
-                "relative flex aspect-square items-center justify-center rounded-lg text-xs transition-colors",
+                "relative flex aspect-square items-center justify-center rounded-lg text-xs font-medium transition-colors sm:text-sm",
                 today
-                  ? "bg-brand-600 font-semibold text-white shadow-soft"
+                  ? "bg-brand-600 font-semibold text-white shadow-[0_4px_12px_-4px_rgba(75,102,255,0.5)]"
                   : expiries
                     ? "bg-amber-50 font-medium text-amber-700 ring-1 ring-amber-200 hover:bg-amber-100"
                     : "text-slate-700 hover:bg-slate-100",
@@ -122,7 +141,7 @@ export function MiniCalendar() {
         })}
       </div>
 
-      <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3 text-xs">
+      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-slate-100 pt-3 text-[11px]">
         <span className="flex items-center gap-1.5 text-slate-500">
           <span className="h-2 w-2 rounded-full bg-amber-400" />
           Plan expiring
