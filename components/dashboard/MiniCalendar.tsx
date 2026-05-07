@@ -110,36 +110,38 @@ export function MiniCalendar() {
         </div>
       }
     >
-      <div className="mb-2 grid grid-cols-7 gap-1 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-400 sm:gap-1.5">
-        {DAY_LABELS.map((d, i) => (
-          <span key={i}>{d}</span>
-        ))}
-      </div>
-      <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
-        {cells.map((day, idx) => {
-          if (!day) return <span key={idx} />;
-          const expiries = expiriesByDay.get(String(day));
-          const today = isToday(day);
-          return (
-            <div
-              key={idx}
-              title={expiries?.join(", ")}
-              className={cn(
-                "relative flex aspect-square items-center justify-center rounded-lg text-xs font-medium transition-colors sm:text-sm",
-                today
-                  ? "bg-brand-600 font-semibold text-white shadow-[0_4px_12px_-4px_rgba(75,102,255,0.5)]"
-                  : expiries
-                    ? "bg-amber-50 font-medium text-amber-700 ring-1 ring-amber-200 hover:bg-amber-100"
-                    : "text-slate-700 hover:bg-slate-100",
-              )}
-            >
-              {day}
-              {expiries && !today && (
-                <span className="absolute bottom-1 h-1 w-1 rounded-full bg-amber-500" />
-              )}
-            </div>
-          );
-        })}
+      <div className="mx-auto w-full max-w-sm">
+        <div className="mb-2 grid grid-cols-7 gap-1 text-center text-[10px] font-semibold uppercase tracking-wider text-slate-400 sm:gap-1.5">
+          {DAY_LABELS.map((d, i) => (
+            <span key={i}>{d}</span>
+          ))}
+        </div>
+        <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
+          {cells.map((day, idx) => {
+            if (!day) return <span key={idx} />;
+            const expiries = expiriesByDay.get(String(day));
+            const today = isToday(day);
+            return (
+              <div
+                key={idx}
+                title={expiries?.join(", ")}
+                className={cn(
+                  "relative flex h-9 items-center justify-center rounded-lg text-xs font-medium transition-colors sm:h-10 sm:text-sm",
+                  today
+                    ? "bg-brand-600 font-semibold text-white shadow-[0_4px_12px_-4px_rgba(75,102,255,0.5)]"
+                    : expiries
+                      ? "bg-amber-50 font-medium text-amber-700 ring-1 ring-amber-200 hover:bg-amber-100"
+                      : "text-slate-700 hover:bg-slate-100",
+                )}
+              >
+                {day}
+                {expiries && !today && (
+                  <span className="absolute bottom-1 h-1 w-1 rounded-full bg-amber-500" />
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 border-t border-slate-100 pt-3 text-[11px]">
