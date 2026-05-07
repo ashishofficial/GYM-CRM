@@ -30,7 +30,6 @@ export default function DashboardPage() {
     (m) => m.currentPlan && getPlanStatus(m.currentPlan.expiryDate) === "expiring",
   ).length;
 
-  // Compute "new this month" — members joined in last 30 days
   const now = new Date();
   const newThisMonth = members.filter((m) => {
     const diff = (now.getTime() - new Date(m.joinDate).getTime()) / (1000 * 60 * 60 * 24);
@@ -38,22 +37,22 @@ export default function DashboardPage() {
   }).length;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 sm:space-y-6 lg:space-y-8">
       {/* Sticky page header */}
-      <div className="sticky top-16 z-20 -mx-4 border-b border-slate-200/70 bg-slate-50/80 px-4 py-4 backdrop-blur-md lg:-mx-8 lg:px-8">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Dashboard</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            Overview of your gym performance and member activity.
-          </p>
-        </div>
+      <div className="sticky top-16 z-20 -mx-4 border-b border-slate-200/70 bg-slate-50/85 px-4 py-3 backdrop-blur-md sm:py-4 lg:-mx-8 lg:px-8">
+        <h1 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl">
+          Dashboard
+        </h1>
+        <p className="mt-0.5 text-xs text-slate-500 sm:mt-1 sm:text-sm">
+          Overview of your gym performance and member activity.
+        </p>
       </div>
 
       {/* Quick actions */}
       <QuickActions />
 
-      {/* KPI row — 4 KPIs (one is the rich MRR card) */}
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      {/* KPI row */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:gap-6 xl:grid-cols-4">
         <KpiCard
           title="Total members"
           value={total.toString()}
@@ -86,7 +85,7 @@ export default function DashboardPage() {
       <GoalProgress />
 
       {/* Charts row 1: Membership growth + Plan distribution */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-3 lg:gap-6">
         <div className="lg:col-span-2">
           <MembershipGrowthCard />
         </div>
@@ -97,7 +96,7 @@ export default function DashboardPage() {
       <SmartInsights />
 
       {/* Engagement row: Peak hours + Live check-ins */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-3 lg:gap-6">
         <div className="lg:col-span-2">
           <PeakHoursHeatmap />
         </div>
@@ -105,7 +104,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Charts row 2: Revenue + Payments overview */}
-      <div className="grid gap-6 lg:grid-cols-5">
+      <div className="grid gap-4 lg:grid-cols-5 lg:gap-6">
         <div className="lg:col-span-3">
           <RevenueCard />
         </div>
@@ -118,24 +117,27 @@ export default function DashboardPage() {
       <CohortRetention />
 
       {/* Operational row */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
         <ExpiringPlansTable />
         <AttendanceStats />
-        <TopMetrics />
+        <div className="md:col-span-2 lg:col-span-1">
+          <TopMetrics />
+        </div>
       </div>
 
       {/* Bottom row */}
-      <div className="grid gap-6 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-3 lg:gap-6">
         <div className="lg:col-span-2">
           <RecentActivities />
         </div>
-        <div className="flex flex-col gap-6">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 lg:gap-6">
           <MiniCalendar />
           <AdminTasks />
-          <RecentMembers />
+          <div className="sm:col-span-2 lg:col-span-1">
+            <RecentMembers />
+          </div>
         </div>
       </div>
-
     </div>
   );
 }

@@ -21,18 +21,20 @@ function GoalRow({ label, current, target, unit, accent }: GoalRowProps) {
       <div className="flex items-baseline justify-between gap-2">
         <p className="text-sm font-medium text-slate-700">{label}</p>
         <p className="text-xs text-slate-500">
-          <span className="font-semibold text-slate-900">{formatVal(current)}</span>
+          <span className="font-semibold text-slate-900 tabular-nums">{formatVal(current)}</span>
           <span className="text-slate-400"> / {formatVal(target)}</span>
         </p>
       </div>
-      <div className="mt-2 flex items-center gap-3">
+      <div className="mt-2 flex items-center gap-2 sm:gap-3">
         <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
           <div
             className={cn("h-full rounded-full transition-[width] duration-500", accent)}
             style={{ width: `${pct}%` }}
           />
         </div>
-        <span className="w-10 text-right text-xs font-semibold text-slate-700">{pct}%</span>
+        <span className="w-10 text-right text-xs font-semibold tabular-nums text-slate-700">
+          {pct}%
+        </span>
       </div>
     </div>
   );
@@ -40,8 +42,8 @@ function GoalRow({ label, current, target, unit, accent }: GoalRowProps) {
 
 export function GoalProgress() {
   return (
-    <Card className="p-6">
-      <div className="flex items-center justify-between">
+    <Card className="p-5 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2.5">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
             <Target className="h-4 w-4" />
@@ -50,7 +52,7 @@ export function GoalProgress() {
             <h3 className="text-sm font-semibold tracking-tight text-slate-900">
               Monthly goals
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="hidden text-xs text-slate-500 sm:block">
               Track progress against this month&apos;s targets
             </p>
           </div>
@@ -60,7 +62,7 @@ export function GoalProgress() {
         </span>
       </div>
 
-      <div className="mt-5 grid gap-5 md:grid-cols-3">
+      <div className="mt-5 grid gap-4 sm:grid-cols-3 sm:gap-5">
         <GoalRow
           label={monthlyGoals.revenue.label}
           current={monthlyGoals.revenue.current}

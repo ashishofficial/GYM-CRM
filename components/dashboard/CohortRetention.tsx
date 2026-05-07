@@ -19,27 +19,29 @@ export function CohortRetention() {
   return (
     <ChartCard
       title="Cohort retention"
-      description="Percentage of members from each join cohort still active"
+      description="Members from each join cohort still active"
       icon={LineChart}
       actions={
-        <div className="flex items-center gap-3 text-xs">
+        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 text-xs">
           <span className="text-slate-500">
-            Avg{" "}
-            <span className="font-semibold text-slate-900">{avgRetention}%</span>
+            Avg <span className="font-semibold text-slate-900">{avgRetention}%</span>
           </span>
-          <span className="text-slate-500">
+          <span className="hidden text-slate-500 sm:inline">
             <span className="font-semibold text-slate-900">{totalRetained}</span>
             <span className="text-slate-400"> / {totalJoined} retained</span>
           </span>
         </div>
       }
     >
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {cohortRetention.map((c) => (
-          <div key={c.cohort} className="flex items-center gap-3">
-            <div className="w-16 shrink-0">
+          <div key={c.cohort} className="flex items-center gap-2 sm:gap-3">
+            <div className="w-14 shrink-0 sm:w-16">
               <p className="text-xs font-semibold text-slate-700">{c.cohort}</p>
-              <p className="text-[10px] text-slate-400">{c.joined} joined</p>
+              <p className="text-[10px] text-slate-400">
+                <span className="hidden sm:inline">{c.joined} joined</span>
+                <span className="sm:hidden">n={c.joined}</span>
+              </p>
             </div>
             <div className="relative h-7 flex-1 overflow-hidden rounded-lg bg-slate-100">
               <div
@@ -48,12 +50,12 @@ export function CohortRetention() {
                 )} px-2.5 transition-[width] duration-500`}
                 style={{ width: `${c.percentage}%` }}
               >
-                <span className="text-[10px] font-bold text-white">
+                <span className="hidden text-[10px] font-bold text-white sm:inline">
                   {c.retained}/{c.joined}
                 </span>
               </div>
             </div>
-            <span className="w-12 text-right text-sm font-semibold text-slate-900">
+            <span className="w-10 text-right text-sm font-semibold tabular-nums text-slate-900 sm:w-12">
               {c.percentage}%
             </span>
           </div>
