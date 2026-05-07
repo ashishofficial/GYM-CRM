@@ -150,12 +150,20 @@ export function SmartInsights() {
   ];
 
   return (
-    <div className="grid gap-6 lg:grid-cols-3">
-      {insights.map((i) => {
+    <div className="grid gap-4 md:grid-cols-2 lg:gap-6 lg:grid-cols-3">
+      {insights.map((i, idx) => {
         const Icon = i.icon;
         const t = tones[i.tone];
+        // 3 cards in a 2-col grid leaves an odd card; promote the 3rd to span 2 at md
+        const isLast = idx === insights.length - 1;
         return (
-          <Card key={i.title} className="overflow-hidden">
+          <Card
+            key={i.title}
+            className={cn(
+              "overflow-hidden",
+              isLast && "md:col-span-2 lg:col-span-1",
+            )}
+          >
             <div className="flex items-start justify-between gap-3 px-5 pt-4 sm:px-6 sm:pt-5">
               <div className="flex items-start gap-3">
                 <div className={cn("flex h-9 w-9 items-center justify-center rounded-xl", t.iconBg)}>

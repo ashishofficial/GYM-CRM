@@ -66,7 +66,7 @@ export function MRRCard() {
           <Sparkline data={mrrSparkline} stroke="#ffffff" fill="#ffffff" width={96} height={32} />
         </div>
 
-        <div className="mt-2 flex items-center gap-1.5 border-t border-white/15 pt-2 text-[11px]">
+        <div className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 border-t border-white/15 pt-2 text-[11px]">
           <span className="font-semibold text-white">Churn {churnRate.current}%</span>
           <span
             className={`inline-flex items-center gap-0.5 ${
