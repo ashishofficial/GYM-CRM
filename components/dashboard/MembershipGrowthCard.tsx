@@ -1,6 +1,18 @@
+"use client";
+
 import { ChartCard } from "@/components/dashboard/ChartCard";
-import { MembershipGrowthChart } from "@/components/dashboard/charts/MembershipGrowthChart";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { TrendingUp } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const MembershipGrowthChart = dynamic(
+  () =>
+    import("./charts/MembershipGrowthChart").then((m) => m.MembershipGrowthChart),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-[260px] w-full" />,
+  },
+);
 
 export function MembershipGrowthCard() {
   return (

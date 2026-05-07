@@ -1,6 +1,17 @@
+"use client";
+
 import { ChartCard } from "@/components/dashboard/ChartCard";
-import { RevenueChart } from "@/components/dashboard/charts/RevenueChart";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { BarChart3 } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const RevenueChart = dynamic(
+  () => import("./charts/RevenueChart").then((m) => m.RevenueChart),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-[260px] w-full" />,
+  },
+);
 
 export function RevenueCard() {
   return (

@@ -1,10 +1,22 @@
+"use client";
+
 import { Avatar } from "@/components/ui/Avatar";
 import { ChartCard } from "@/components/dashboard/ChartCard";
-import { AttendanceMiniChart } from "@/components/dashboard/charts/AttendanceMiniChart";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { attendanceLast7Days } from "@/data/analytics";
 import { members } from "@/data/members";
 import { Activity } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+
+const AttendanceMiniChart = dynamic(
+  () =>
+    import("./charts/AttendanceMiniChart").then((m) => m.AttendanceMiniChart),
+  {
+    ssr: false,
+    loading: () => <Skeleton className="h-[120px] w-full" />,
+  },
+);
 
 export function AttendanceStats() {
   const todayCount = attendanceLast7Days[attendanceLast7Days.length - 1].count;

@@ -1,8 +1,29 @@
+"use client";
+
 import { ChartCard } from "@/components/dashboard/ChartCard";
-import { PaymentMethodChart } from "@/components/dashboard/charts/PaymentMethodChart";
+import { Skeleton } from "@/components/ui/Skeleton";
 import { members } from "@/data/members";
 import { formatCurrency } from "@/lib/utils";
 import { CreditCard } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const PaymentMethodChart = dynamic(
+  () =>
+    import("./charts/PaymentMethodChart").then((m) => m.PaymentMethodChart),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex flex-col items-center gap-4 sm:flex-row">
+        <Skeleton className="h-[160px] w-[160px] shrink-0 rounded-full" />
+        <div className="w-full space-y-3">
+          {[0, 1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-3 w-full" />
+          ))}
+        </div>
+      </div>
+    ),
+  },
+);
 
 export function PaymentsOverview() {
   const today = new Date().toISOString().slice(0, 10);
