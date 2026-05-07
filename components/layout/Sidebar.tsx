@@ -48,38 +48,46 @@ export function Sidebar({ open, onClose }: Props) {
       {open && (
         <div
           onClick={onClose}
-          className="fixed inset-0 z-30 bg-slate-900/40 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-30 bg-slate-950/60 backdrop-blur-sm lg:hidden"
           aria-hidden
         />
       )}
 
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-800/70 bg-slate-950 text-slate-300 transition-transform lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        <div className="flex h-16 items-center justify-between border-b border-slate-100 px-5">
+        {/* Soft brand glow at the top */}
+        <div className="pointer-events-none absolute -left-12 -top-12 h-48 w-48 rounded-full bg-brand-500/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-16 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-violet-500/15 blur-3xl" />
+
+        {/* Header */}
+        <div className="relative flex h-16 items-center justify-between border-b border-slate-800/70 px-5">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-soft">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-[0_4px_12px_-4px_rgba(75,102,255,0.6)]">
               <Dumbbell className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-bold text-slate-900">PulseGym</p>
-              <p className="text-[10px] uppercase tracking-wider text-slate-400">CRM Suite</p>
+              <p className="text-sm font-bold text-white">PulseGym</p>
+              <p className="text-[10px] uppercase tracking-wider text-slate-500">
+                CRM Suite
+              </p>
             </div>
           </Link>
           <button
             onClick={onClose}
-            className="rounded-md p-1.5 text-slate-500 hover:bg-slate-100 lg:hidden"
+            className="rounded-md p-1.5 text-slate-400 hover:bg-slate-800/60 hover:text-white lg:hidden"
             aria-label="Close sidebar"
           >
             <X className="h-4 w-4" />
           </button>
         </div>
 
-        <nav className="flex-1 space-y-0.5 p-3">
-          <p className="px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+        {/* Nav */}
+        <nav className="relative flex-1 space-y-0.5 p-3">
+          <p className="px-3 py-2 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
             Workspace
           </p>
           {nav.map((item) => {
@@ -91,16 +99,22 @@ export function Sidebar({ open, onClose }: Props) {
                 href={item.href}
                 onClick={onClose}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  "group relative flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   active
-                    ? "bg-brand-50 text-brand-700"
-                    : "text-slate-600 hover:bg-slate-50 hover:text-slate-900",
+                    ? "bg-gradient-to-r from-brand-500/20 to-brand-500/5 text-white"
+                    : "text-slate-400 hover:bg-slate-800/60 hover:text-white",
                 )}
               >
+                {/* Active indicator stripe */}
+                {active && (
+                  <span className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-gradient-to-b from-brand-400 to-violet-500" />
+                )}
                 <Icon
                   className={cn(
-                    "h-4 w-4",
-                    active ? "text-brand-600" : "text-slate-400",
+                    "h-4 w-4 transition-colors",
+                    active
+                      ? "text-brand-300"
+                      : "text-slate-500 group-hover:text-slate-300",
                   )}
                 />
                 {item.label}
@@ -109,19 +123,20 @@ export function Sidebar({ open, onClose }: Props) {
           })}
         </nav>
 
-        <div className="border-t border-slate-100 p-3">
+        {/* Footer */}
+        <div className="relative border-t border-slate-800/70 p-3">
           <Link
             href="#"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-slate-900"
+            className="group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition-colors hover:bg-slate-800/60 hover:text-white"
           >
-            <Settings className="h-4 w-4 text-slate-400" />
+            <Settings className="h-4 w-4 text-slate-500 group-hover:text-slate-300" />
             Settings
           </Link>
           <button
             onClick={handleSignOut}
-            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-600 transition-colors hover:bg-slate-50 hover:text-red-600"
+            className="group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-400 transition-colors hover:bg-rose-500/10 hover:text-rose-300"
           >
-            <LogOut className="h-4 w-4 text-slate-400" />
+            <LogOut className="h-4 w-4 text-slate-500 group-hover:text-rose-300" />
             Sign out
           </button>
         </div>
