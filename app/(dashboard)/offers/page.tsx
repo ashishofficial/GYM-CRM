@@ -7,10 +7,11 @@ import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Select } from "@/components/ui/Select";
+import { CreateOfferModal } from "@/components/offers/CreateOfferModal";
 import { OfferCard } from "@/components/offers/OfferCard";
 import { OffersStats } from "@/components/offers/OffersStats";
 import { members } from "@/data/members";
-import { offers } from "@/data/plans";
+import { offers as seedOffers } from "@/data/plans";
 import { formatCurrency } from "@/lib/utils";
 import type { Offer } from "@/types";
 import { Plus, Tag } from "lucide-react";
@@ -18,6 +19,9 @@ import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function OffersPage() {
+  const [offers, setOffers] = useState<Offer[]>(seedOffers);
+  const [createOpen, setCreateOpen] = useState(false);
+
   const [memberId, setMemberId] = useState(members[0].id);
   const [type, setType] = useState<"percentage" | "flat">("percentage");
   const [value, setValue] = useState(15);
@@ -40,12 +44,10 @@ export default function OffersPage() {
     toast.success(`${name} applied to ${member.fullName}`);
   };
 
-  // Pre-fill the apply form from a card click
   const handleApplyFromCard = (offer: Offer) => {
     setName(offer.name);
     setType(offer.type);
     setValue(offer.value);
-    // Smooth scroll to the form
     if (typeof document !== "undefined") {
       document
         .getElementById("apply-offer")
@@ -54,9 +56,14 @@ export default function OffersPage() {
   };
 
   const handleToggle = (offer: Offer) => {
-    toast.success(
-      `${offer.name} ${offer.active ? "deactivated" : "activated"}`,
+    setOffers((prev) =>
+      prev.map((o) => (o.id === offer.id ? { ...o, active: !o.active } : o)),
     );
+    toast.success(`${offer.name} ${offer.active ? "deactivated" : "activated"}`);
+  };
+
+  const handleCreate = (offer: Offer) => {
+    setOffers((prev) => [offer, ...prev]);
   };
 
   return (
@@ -65,14 +72,14 @@ export default function OffersPage() {
         title="Offers"
         description="Create discounts and apply them to members."
         actions={
-          <Button>
+          <Button onClick={() => setCreateOpen(true)}>
             <Plus className="h-4 w-4" />
             New offer
           </Button>
         }
       />
 
-      <OffersStats />
+      <OffersStats offers={offers} />
 
       {/* Offer cards grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:gap-5 xl:grid-cols-4">
@@ -191,6 +198,14 @@ export default function OffersPage() {
           </div>
         </CardContent>
       </Card>
+
+      {createOpen && (
+        <CreateOfferModal
+          open
+          onClose={() => setCreateOpen(false)}
+          onCreate={handleCreate}
+        />
+      )}
     </div>
   );
 }

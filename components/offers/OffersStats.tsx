@@ -1,8 +1,12 @@
 import { Card } from "@/components/ui/Card";
 import { members } from "@/data/members";
-import { offers } from "@/data/plans";
 import { cn, formatCurrency, getPlanStatus } from "@/lib/utils";
+import type { Offer } from "@/types";
 import { CheckCircle2, Sparkles, Tag, Users, type LucideIcon } from "lucide-react";
+
+interface Props {
+  offers: Offer[];
+}
 
 interface Stat {
   label: string;
@@ -13,7 +17,7 @@ interface Stat {
   blob: string;
 }
 
-function buildStats(): Stat[] {
+function buildStats(offers: Offer[]): Stat[] {
   const active = offers.filter((o) => o.active).length;
 
   // "Highest discount" — display the biggest single offer value
@@ -68,8 +72,8 @@ function buildStats(): Stat[] {
   ];
 }
 
-export function OffersStats() {
-  const stats = buildStats();
+export function OffersStats({ offers }: Props) {
+  const stats = buildStats(offers);
 
   return (
     <div className="grid gap-3 sm:grid-cols-2 lg:gap-4 xl:grid-cols-4">
