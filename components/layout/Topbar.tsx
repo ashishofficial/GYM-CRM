@@ -1,8 +1,7 @@
 "use client";
 
-import { Bell, Menu, Search } from "lucide-react";
+import { Bell, Menu } from "lucide-react";
 import { Avatar } from "@/components/ui/Avatar";
-import { Input } from "@/components/ui/Input";
 
 interface Props {
   onMenu: () => void;
@@ -18,14 +17,6 @@ export function Topbar({ onMenu }: Props) {
       >
         <Menu className="h-5 w-5" />
       </button>
-
-      <div className="flex-1 max-w-md">
-        <Input
-          placeholder="Search members, plans, invoices..."
-          iconLeft={<Search className="h-4 w-4" />}
-          className="bg-slate-50 border-slate-100"
-        />
-      </div>
 
       <div className="ml-auto flex items-center gap-3">
         <button

@@ -1,10 +1,15 @@
 import { AdminTasks } from "@/components/dashboard/AdminTasks";
 import { AttendanceStats } from "@/components/dashboard/AttendanceStats";
+import { CohortRetention } from "@/components/dashboard/CohortRetention";
 import { ExpiringPlansTable } from "@/components/dashboard/ExpiringPlansTable";
+import { GoalProgress } from "@/components/dashboard/GoalProgress";
 import { KpiCard } from "@/components/dashboard/KpiCard";
+import { LiveCheckIns } from "@/components/dashboard/LiveCheckIns";
 import { MembershipGrowthCard } from "@/components/dashboard/MembershipGrowthCard";
 import { MiniCalendar } from "@/components/dashboard/MiniCalendar";
+import { MRRCard } from "@/components/dashboard/MRRCard";
 import { PaymentsOverview } from "@/components/dashboard/PaymentsOverview";
+import { PeakHoursHeatmap } from "@/components/dashboard/PeakHoursHeatmap";
 import { PlanDistributionCard } from "@/components/dashboard/PlanDistributionCard";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { RecentActivities } from "@/components/dashboard/RecentActivities";
@@ -13,22 +18,24 @@ import { RevenueCard } from "@/components/dashboard/RevenueCard";
 import { SmartInsights } from "@/components/dashboard/SmartInsights";
 import { TopMetrics } from "@/components/dashboard/TopMetrics";
 import { members } from "@/data/members";
-import { formatCurrency, getPlanStatus } from "@/lib/utils";
-import { Activity, AlertTriangle, DollarSign, Users } from "lucide-react";
+import { getPlanStatus } from "@/lib/utils";
+import { Activity, UserPlus, Users } from "lucide-react";
 
 export default function DashboardPage() {
   const total = members.length;
   const active = members.filter(
     (m) => m.isActive && m.currentPlan && getPlanStatus(m.currentPlan.expiryDate) !== "expired",
   ).length;
-  const revenue = members.reduce(
-    (sum, m) =>
-      sum + m.payments.filter((p) => p.status === "Paid").reduce((s, p) => s + p.amount, 0),
-    0,
-  );
   const expiringSoon = members.filter(
     (m) => m.currentPlan && getPlanStatus(m.currentPlan.expiryDate) === "expiring",
   ).length;
+
+  // Compute "new this month" — members joined in last 30 days
+  const now = new Date();
+  const newThisMonth = members.filter((m) => {
+    const diff = (now.getTime() - new Date(m.joinDate).getTime()) / (1000 * 60 * 60 * 24);
+    return diff >= 0 && diff <= 30;
+  }).length;
 
   return (
     <div className="space-y-8">
@@ -45,7 +52,7 @@ export default function DashboardPage() {
       {/* Quick actions */}
       <QuickActions />
 
-      {/* KPI cards */}
+      {/* KPI row — 4 KPIs (one is the rich MRR card) */}
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
         <KpiCard
           title="Total members"
@@ -61,23 +68,24 @@ export default function DashboardPage() {
           icon={Activity}
           tone="emerald"
         />
+        <MRRCard />
         <KpiCard
-          title="Total revenue"
-          value={formatCurrency(revenue)}
-          change={{ value: "+12.4%", trend: "up", label: "this quarter" }}
-          icon={DollarSign}
+          title="New this month"
+          value={newThisMonth.toString()}
+          change={{
+            value: `${expiringSoon} expiring`,
+            trend: expiringSoon > 0 ? "down" : "up",
+            label: "next 7d",
+          }}
+          icon={UserPlus}
           tone="violet"
-        />
-        <KpiCard
-          title="Expiring soon"
-          value={expiringSoon.toString()}
-          change={{ value: "-1", trend: "down", label: "vs last week" }}
-          icon={AlertTriangle}
-          tone="amber"
         />
       </div>
 
-      {/* Charts: 70 / 30 */}
+      {/* Goals strip */}
+      <GoalProgress />
+
+      {/* Charts row 1: Membership growth + Plan distribution */}
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <MembershipGrowthCard />
@@ -88,7 +96,15 @@ export default function DashboardPage() {
       {/* Smart insights */}
       <SmartInsights />
 
-      {/* Charts: 60 / 40 */}
+      {/* Engagement row: Peak hours + Live check-ins */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <PeakHoursHeatmap />
+        </div>
+        <LiveCheckIns />
+      </div>
+
+      {/* Charts row 2: Revenue + Payments overview */}
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="lg:col-span-3">
           <RevenueCard />
@@ -97,6 +113,9 @@ export default function DashboardPage() {
           <PaymentsOverview />
         </div>
       </div>
+
+      {/* Cohort retention — full width */}
+      <CohortRetention />
 
       {/* Operational row */}
       <div className="grid gap-6 lg:grid-cols-3">
@@ -116,6 +135,7 @@ export default function DashboardPage() {
           <RecentMembers />
         </div>
       </div>
+
     </div>
   );
 }
