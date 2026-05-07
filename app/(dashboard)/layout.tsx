@@ -8,11 +8,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="lg:pl-64">
+      <div className="overflow-x-hidden lg:pl-64">
         <Topbar onMenu={() => setSidebarOpen(true)} />
-        <main className="px-4 py-6 lg:px-8">{children}</main>
+        <main className="overflow-x-hidden px-4 py-6 lg:px-8">{children}</main>
       </div>
     </div>
   );

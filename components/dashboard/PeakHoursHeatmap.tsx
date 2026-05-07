@@ -43,7 +43,7 @@ export function PeakHoursHeatmap() {
       bodyClassName="px-3 sm:px-6"
     >
       {/* Horizontal scroll on small screens; scrollbar styled */}
-      <div className="-mx-3 overflow-x-auto px-3 scrollbar-thin sm:mx-0 sm:px-0">
+      <div className="overflow-x-auto scrollbar-thin">
         <div className="min-w-[520px] space-y-1.5">
           {/* Hour labels */}
           <div className="flex gap-1 pl-9">

@@ -12,7 +12,7 @@ export function Card({ className, hover, gradient, ...props }: CardProps) {
   return (
     <div
       className={cn(
-        "flex flex-col rounded-2xl border shadow-soft transition-all duration-200",
+        "flex flex-col overflow-hidden rounded-2xl border shadow-soft transition-all duration-200",
         gradient ? "border-transparent" : "border-slate-200/70 bg-white",
         hover && "hover:-translate-y-0.5 hover:shadow-md",
         !gradient && hover && "hover:border-slate-200",
