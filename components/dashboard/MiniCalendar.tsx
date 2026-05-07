@@ -82,6 +82,7 @@ export function MiniCalendar() {
       title="Calendar"
       description="Plan expiries this month"
       icon={CalendarDays}
+      bodyClassName="pb-6 sm:pb-7"
       actions={
         <div className="flex items-center gap-0.5">
           <button
