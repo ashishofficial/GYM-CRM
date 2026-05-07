@@ -85,7 +85,7 @@ export function KpiCard({ title, value, change, icon: Icon, tone = "brand" }: Pr
           <Icon className="h-4 w-4 sm:h-4.5 sm:w-4.5" />
         </div>
       </div>
-      <p className="relative mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:mt-4 sm:text-3xl">
+      <p className="relative mt-3 font-mono text-2xl font-bold tracking-tight tabular-nums text-slate-900 sm:mt-4 sm:text-[28px]">
         {value}
       </p>
       {change && (

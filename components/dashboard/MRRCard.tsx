@@ -54,7 +54,7 @@ export function MRRCard() {
           </div>
         </div>
 
-        <p className="mt-3 text-2xl font-extrabold tracking-tight sm:mt-4 sm:text-3xl">
+        <p className="mt-3 font-mono text-2xl font-bold tracking-tight tabular-nums sm:mt-4 sm:text-[28px]">
           {formatCurrency(mrr)}
         </p>
 
